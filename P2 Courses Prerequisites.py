@@ -48,3 +48,74 @@ for index, tup in enumerate(list_of_rules):
 
 
 print(solution_list)
+
+
+"""
+# Number of courses and rules
+def read_input():
+    while True:
+        try:
+            num_courses = int(input("Please insert the total number of courses: "))
+            if num_courses > 0:
+                break
+        except ValueError:
+            print("Error: Please enter a valid positive integer.")
+    
+    while True:
+        try:
+            num_rules = int(input("Please insert the number of rules: "))
+            if num_rules >= 0:
+                break
+        except ValueError:
+            print("Error: Please enter a valid non-negative integer.")
+
+    rules = []
+    print(f"Please input {num_rules} pairs of prerequisites:")
+    for _ in range(num_rules):
+        try:
+            a, b = map(int, input().split())
+            if 0 <= a < num_courses and 0 <= b < num_courses:
+                rules.append((a, b))
+            else:
+                print(f"Error: Both values must be between 0 and {num_courses - 1}.")
+        except ValueError:
+            print("Error: Invalid input format. Please enter two integers separated by a space.")
+    return num_courses, rules
+
+
+# Topological sort using Depth-First Search (DFS)
+def find_course_order(num_courses, prerequisites):
+    # adjacency list
+    adj_list = [[] for _ in range(num_courses)]
+    for a, b in prerequisites:
+        adj_list[b].append(a)
+
+    # -> Use an array to detect cycles (0 for unvisited, 1 for visiting, 2 for visited)
+    def dfs(course, visited, result):
+        if visited[course] == 1:  # Cycle detected
+            return False
+        if visited[course] == 2:  # Already processed
+            return True
+
+        visited[course] = 1  # Mark as visiting
+        for neighbor in adj_list[course]:
+            if not dfs(neighbor, visited, result):
+                return False
+        visited[course] = 2  # Mark as visited
+        result.append(course)  # Add course to result
+        return True
+
+    # Main function logic
+    visited = [0] * num_courses
+    result = []
+
+    for course in range(num_courses):
+        if visited[course] == 0:
+            if not dfs(course, visited, result):
+                return []  # empty list
+    return result
+
+num_courses, rules = read_input()
+solution = find_course_order(num_courses, rules)
+print(solution)
+"""
